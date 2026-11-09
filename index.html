@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generator Asesmen Pintar</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+:root{--bg:#f8faff;--surface:#fff;--surface2:#f1f5f9;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;--blue:#2563eb}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
+header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.header-inner,.container{max-width:1280px;margin:auto;padding:0 24px}.header-inner{height:70px;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;gap:12px;align-items:center}.logo{width:38px;height:38px;background:#0f172a;color:#fff;border-radius:12px;display:grid;place-items:center;font-weight:800}
+.brand h1{font-size:17px;margin:0}.brand p{font-size:11px;margin:3px 0 0;color:var(--muted)}
+.container{padding-top:30px;padding-bottom:40px}.intro h2{font-size:29px;margin:0}.intro p{color:var(--muted);line-height:1.6;max-width:760px}
+.layout{display:grid;grid-template-columns:360px 1fr;gap:24px;margin-top:25px}.types{display:grid;gap:12px;align-content:start}
+.card,.panel,.result{background:var(--surface);border:1px solid var(--border);border-radius:18px}
+.type{padding:16px;text-align:left;cursor:pointer;transition:.2s}.type:hover{box-shadow:0 5px 18px #0000000d}.type.active{border-width:2px;background:#eff6ff;border-color:#93c5fd}
+.type-head{display:flex;justify-content:space-between;align-items:center}.badge{font-size:10px;font-weight:800;padding:5px 9px;border-radius:99px;background:#2563eb;color:#fff}.icon{font-size:18px;font-weight:800}
+.type small{color:var(--muted);font-weight:700}.type h3{margin:5px 0 10px;font-size:17px}.chips{display:flex;gap:5px;flex-wrap:wrap}.chip{font-size:11px;padding:5px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:99px}
+.tip{background:#0f172a;color:white;padding:16px;border-radius:16px;font-size:12px;line-height:1.6}.tip b{display:block;margin-bottom:4px}
+.panel{overflow:hidden}.panel-head{padding:18px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}.panel-head small{font-weight:800;color:var(--muted);letter-spacing:1px}.panel-head h3{margin:4px 0 0}.form{padding:24px;display:grid;grid-template-columns:1fr 1fr;gap:17px}.full{grid-column:1/-1}
+label{font-size:12px;font-weight:700;display:block;margin-bottom:6px}select,textarea,input[type=range]{width:100%}select,textarea{border:1px solid var(--border);border-radius:11px;padding:12px;font:inherit;font-size:14px;background:white}textarea{min-height:76px;resize:vertical}
+.options{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}.options.four{grid-template-columns:repeat(4,1fr)}button{font:inherit}.choice,.action,.history-btn{border:1px solid var(--border);background:white;border-radius:10px;height:42px;font-weight:700;font-size:12px;cursor:pointer}.choice.active{background:#0f172a;color:#fff;border-color:#0f172a}
+.generate{height:52px;width:100%;border:0;border-radius:12px;background:#0f172a;color:#fff;font-weight:800;font-size:15px;cursor:pointer}.generate:disabled{opacity:.5}.hint{text-align:center;color:var(--muted);font-size:11px;margin:9px 0 0}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.action,.history-btn{padding:0 15px;border-radius:99px}.action.primary{background:#2563eb;color:#fff;border-color:#2563eb}
+.empty{margin-top:18px;padding:45px 20px;border:1px dashed var(--border);border-radius:18px;text-align:center;background:#ffffff99}.empty .emoji{font-size:30px}.empty p{font-size:13px;color:var(--muted);line-height:1.6}
+.result{margin-top:14px;overflow:hidden}.result-head{padding:16px 20px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;gap:10px}.result-head small{font-weight:800;color:var(--muted)}.result-head h4{margin:4px 0 0}.copy{background:#0f172a;color:#fff;border:0;border-radius:99px;padding:7px 13px;font-weight:700;font-size:12px;cursor:pointer}.content{padding:20px;white-space:pre-wrap;font-size:13px;line-height:1.7}.box{margin:0 20px 20px;padding:14px;border-radius:12px;background:#fff8e6;border:1px solid #fde68a;font-size:12px;white-space:pre-wrap;line-height:1.6}.box.key{background:#f8fafc;border-color:var(--border)}
+.drawer{position:fixed;inset:0;z-index:20;display:none}.drawer.show{display:flex;justify-content:flex-end}.overlay{flex:1;background:#0004}.side{width:min(390px,92vw);background:white;padding:20px;overflow:auto;box-shadow:-10px 0 30px #0002}.side-head{display:flex;justify-content:space-between;align-items:center}.history-item{border:1px solid var(--border);padding:12px;border-radius:12px;margin-top:10px;background:#f8fafc;font-size:12px}.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#0f172a;color:#fff;padding:11px 18px;border-radius:99px;font-size:13px;font-weight:700;display:none;z-index:30}
+footer{margin-top:35px;padding-top:20px;border-top:1px solid var(--border);color:var(--muted);font-size:11px}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.form{grid-template-columns:1fr}.intro h2{font-size:23px}.header-inner,.container{padding-left:15px;padding-right:15px}.options{grid-template-columns:repeat(5,1fr)}}
+</style>
+</head>
+<body>
+<header><div class="header-inner"><div class="brand"><div class="logo">G</div><div><h1>Generator Asesmen Pintar</h1><p>Panduan untuk Guru • v2 Lokal</p></div></div><button class="history-btn" onclick="toggleHistory()">Riwayat (<span id="historyCount">0</span>)</button></div></header>
+
+<div class="container">
+<section class="intro"><h2>Generator Asesmen Pintar – Panduan untuk Guru</h2><p>Pilih 1 dari 4 jenis asesmen, isi konteks pembelajaran, lalu klik Generate. Semua soal dibuat langsung di browser dan dapat disalin atau diunduh.</p></section>
+<div class="layout">
+<aside class="types" id="types"></aside>
+<main>
+<div class="panel">
+<div class="panel-head"><div><small>FORM KONTEKS</small><h3>Detail Pembelajaran</h3></div><span class="chip" id="selectedLabel">Terbuka</span></div>
+<div class="form">
+<div><label>Mata Pelajaran</label><select id="mapel"></select></div>
+<div><label>Jenjang</label><div class="options" id="jenjang"></div></div>
+<div class="full"><label>Topik / Materi</label><textarea id="topik">Ekosistem dan Rantai Makanan</textarea></div>
+<div class="full"><label>Tujuan Pembelajaran</label><textarea id="tujuan">Siswa mampu menganalisis interaksi antar komponen ekosistem dan membuat jaring-jaring makanan sederhana</textarea></div>
+<div><label>Jumlah Soal (1–10)</label><input type="range" id="jumlah" min="1" max="10" value="3" oninput="document.getElementById('jumlahValue').textContent=this.value"><div class="hint">Jumlah dipilih: <b id="jumlahValue">3</b></div></div>
+<div><label>Level Kesulitan</label><div class="options four" id="kesulitan"></div></div>
+<div class="full"><button class="generate" id="generateBtn" onclick="generate()">⚡ Generate Soal</button><div class="hint">Logic lokal • Tanpa API • Hasil langsung bisa di-copy</div></div>
+</div></div>
+<div class="toolbar" id="toolbar" style="display:none"><button class="action" onclick="copyAll()">📋 Salin Semua</button><button class="action" onclick="downloadTXT()">⬇ Unduh TXT</button><button class="action primary" onclick="copyPrompt()">🤖 Salin Prompt AI</button></div>
+<div id="output"><div class="empty"><div class="emoji">📝</div><h3>Belum ada soal</h3><p>Pilih tipe asesmen, isi topik dan tujuan pembelajaran, kemudian klik <b>Generate Soal</b>.</p></div></div>
+</main></div>
+<footer>© Generator Asesmen Pintar • Versi HTML Mandiri • 4 Tipe Asesmen • Siap digunakan</footer>
+</div>
+
+<div class="drawer" id="drawer"><div class="overlay" onclick="toggleHistory()"></div><div class="side"><div class="side-head"><h3>Riwayat Generator</h3><button class="copy" onclick="toggleHistory()">✕</button></div><p style="font-size:12px;color:#64748b">Riwayat disimpan secara lokal di browser ini.</p><div id="historyList"></div></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const TYPES={
+'terbuka':{label:'Terbuka',subtitle:'Biru Terbuka',icon:'✦',items:['Esai','Uraian Panjang','Proyek','Tulisan Kreatif'],tip:'Gunakan asesmen terbuka untuk mengukur kemampuan HOTS, argumentasi, refleksi, dan proyek.'},
+'tertutup':{label:'Tertutup',subtitle:'Hijau Tertutup',icon:'◐',items:['Pilihan Ganda','Benar/Salah','Isian Singkat','Menjodohkan'],tip:'Tertutup menghasilkan variasi soal objektif untuk mengukur pemahaman konsep.'},
+'langsung':{label:'Langsung',subtitle:'Oranye Langsung',icon:'◎',items:['Tes Praktik','Unjuk Kerja','Observasi','Demonstrasi'],tip:'Gunakan untuk penilaian keterampilan melalui praktik dan observasi.'},
+'tidak-langsung':{label:'Tidak Langsung',subtitle:'Ungu Tidak Langsung',icon:'⬙',items:['Skala Penilaian','Checklist','Laporan','Wawancara'],tip:'Cocok untuk memantau sikap, keterlibatan, dan perkembangan belajar.'}
+};
+const mapels=['Matematika','IPA','IPS','Bahasa Indonesia','Bahasa Inggris','PPKn','Seni Budaya','PJOK','Informatika','Biologi','Fisika','Kimia','Ekonomi','Sejarah'];
+const jenjangs=['SD','SMP','SMA','SMK','Kuliah'], levels=['Mudah','Sedang','Sulit','HOTS'];
+let selected='terbuka', generated=[];
+const levelText={Mudah:'definisi dasar dan identifikasi fakta',Sedang:'pemahaman konsep dan penerapan sederhana',Sulit:'analisis, evaluasi, dan pemecahan masalah kompleks',HOTS:'kreasi, evaluasi kritis, dan transfer lintas konteks'};
+
+function init(){
+ document.getElementById('mapel').innerHTML=mapels.map(x=>`<option>${x}</option>`).join('');
+ document.getElementById('mapel').value='IPA';
+ renderChoices('jenjang',jenjangs,'SMP',v=>setChoice('jenjang',v));
+ renderChoices('kesulitan',levels,'Sedang',v=>setChoice('kesulitan',v));
+ renderTypes(); updateHistory();
+}
+function renderChoices(id,arr,active,fn){document.getElementById(id).innerHTML=arr.map(x=>`<button class="choice ${x===active?'active':''}" data-value="${x}">${x}</button>`).join('');document.querySelectorAll('#'+id+' .choice').forEach(b=>b.onclick=()=>fn(b.dataset.value));}
+function setChoice(id,v){document.querySelectorAll('#'+id+' .choice').forEach(b=>b.classList.toggle('active',b.dataset.value===v));}
+function getChoice(id){return document.querySelector('#'+id+' .choice.active').dataset.value}
+function renderTypes(){document.getElementById('types').innerHTML=Object.entries(TYPES).map(([k,d])=>`<div class="card type ${k===selected?'active':''}" onclick="selectType('${k}')"><div class="type-head"><span class="icon">${d.icon}</span>${k===selected?'<span class="badge">AKTIF</span>':''}</div><small>${d.subtitle}</small><h3>${d.label}</h3><div class="chips">${d.items.map(i=>`<span class="chip">${i}</span>`).join('')}</div></div>`).join('')+`<div class="tip"><b>💡 Tip Guru</b><span>${TYPES[selected].tip}</span></div>`;document.getElementById('selectedLabel').textContent=TYPES[selected].label}
+function selectType(k){selected=k;renderTypes()}
+function data(){return {mapel:document.getElementById('mapel').value,jenjang:getChoice('jenjang'),topik:document.getElementById('topik').value.trim(),tujuan:document.getElementById('tujuan').value.trim(),jumlah:+document.getElementById('jumlah').value,kesulitan:getChoice('kesulitan')}}
+function makeItems(type,f){
+ const t=f.topik||'materi pembelajaran', goal=f.tujuan||`Memahami konsep ${t} pada ${f.mapel}`, lv=levelText[f.kesulitan]||levelText.Sedang, out=[];
+ for(let i=1;i<=f.jumlah;i++){
+  if(type==='terbuka'){const a=[
+`Jelaskan secara mendalam bagaimana konsep ${t} bekerja dalam konteks ${f.mapel} di jenjang ${f.jenjang}. Hubungkan dengan tujuan: ${goal}.`,
+`Rancang sebuah proyek mini bertema "${t}" yang menunjukkan penguasaan ${lv}. Uraikan tujuan, proses, dan produk akhirnya.`,
+`Tulis esai reflektif tentang tantangan memahami ${t} dan bagaimana kamu mengatasinya. Sertakan contoh nyata.`,
+`Buat argumen kritis tentang penerapan ${t}. Berikan alasan dan bukti yang relevan.`][(i-1)%4];out.push({title:`Soal Esai Terbuka #${i}`,type:`Esai • ${f.kesulitan}`,content:a,rubric:`RUBRIK (${f.kesulitan} – ${f.jenjang}):\n[4] Sangat Baik: Penjelasan lengkap, struktur logis, contoh relevan.\n[3] Baik: Memahami inti materi dengan contoh yang cukup.\n[2] Cukup: Memahami sebagian materi.\n[1] Perlu Bimbingan: Jawaban belum fokus pada tujuan pembelajaran.`})}
+  else if(type==='tertutup'){const subs=['Pilihan Ganda','Benar/Salah','Isian Singkat','Menjodohkan'],s=subs[(i-1)%4];if(s==='Pilihan Ganda')out.push({title:`PG #${i} – ${t}`,type:`Pilihan Ganda • ${f.kesulitan}`,content:`Manakah pernyataan yang PALING tepat menjelaskan ${t} dalam ${f.mapel} (${f.jenjang})?\n\nA. ${t} hanya berkaitan dengan hafalan tanpa penerapan.\nB. ${t} merupakan konsep yang dapat dianalisis dan diterapkan sesuai tujuan pembelajaran.\nC. ${t} tidak relevan dengan tujuan pembelajaran.\nD. ${t} hanya dapat dipahami pada jenjang tertentu.`,key:`Kunci: B\nAlasan: Opsi B mencerminkan pemahaman dan penerapan konsep sesuai tujuan pembelajaran.`});else if(s==='Benar/Salah')out.push({title:`B/S #${i}`,type:`Benar/Salah • ${f.kesulitan}`,content:`Pernyataan: "Dalam konteks ${t}, penerapan konsep selalu menghasilkan hasil yang sama tanpa mempertimbangkan kondisi dan variabel." \n\nBeri tanda BENAR atau SALAH dan jelaskan alasan singkat.`,key:`Kunci: SALAH. Konsep dan penerapannya dapat dipengaruhi oleh konteks serta variabel yang relevan.`});else if(s==='Isian Singkat')out.push({title:`Isian #${i}`,type:`Isian Singkat • ${f.kesulitan}`,content:`Lengkapi kalimat berikut:\n\n"Untuk mencapai ${goal.toLowerCase()}, langkah penting dalam mempelajari ${t} adalah ________, karena ________."`,key:`Contoh jawaban: mengidentifikasi konsep kunci, karena menjadi dasar untuk memahami dan menerapkan materi.`});else out.push({title:`Menjodohkan #${i}`,type:`Menjodohkan • ${f.kesulitan}`,content:`Jodohkan:\n\nKolom A\n1. Konsep inti ${t}\n2. Contoh penerapan ${t}\n3. Miskonsepsi umum\n\nKolom B\na. Studi kasus pada ${f.mapel}\nb. Definisi akurat sesuai tujuan pembelajaran\nc. Anggapan bahwa materi hanya perlu dihafal`,key:`Kunci: 1-b, 2-a, 3-c`})}
+  else if(type==='langsung')out.push({title:`Lembar Praktik #${i} – ${t}`,type:`Tes Praktik / Observasi • ${f.jenjang}`,content:`JUDUL KEGIATAN: Demonstrasi ${t}\n\nALAT & BAHAN:\n- LKPD ${f.mapel}\n- Alat/bahan sesuai topik\n- Stopwatch dan lembar observasi\n\nLANGKAH KERJA:\n1. Orientasi: Guru menjelaskan tujuan ${goal}.\n2. Eksplorasi: Peserta didik melakukan praktik terkait ${t}.\n3. Demonstrasi: Peserta didik menunjukkan hasil.\n4. Refleksi: Catat kesulitan dan solusi.\n\nINDIKATOR:\n- Ketepatan prosedur\n- Kolaborasi\n- Komunikasi\n- Keselamatan dan etika kerja`,rubric:`CHECKLIST OBSERVASI:\n[ ] Memulai kegiatan sesuai prosedur\n[ ] Menggunakan istilah yang tepat\n[ ] Menyelesaikan tugas sesuai level ${f.kesulitan}\n[ ] Menyimpulkan hasil kegiatan`});
+  else out.push({title:`Instrumen Tidak Langsung #${i}`,type:'Skala / Checklist / Wawancara',content:`TUJUAN: Memantau penguasaan ${t} untuk ${goal}.\n\nA. SKALA PENILAIAN (1–4)\n1. Konsistensi menunjukkan pemahaman ${t}: [1 2 3 4]\n2. Inisiatif mencari sumber tambahan: [1 2 3 4]\n3. Kemampuan menjelaskan kembali materi: [1 2 3 4]\n\nB. CHECKLIST\n[ ] Membawa catatan tentang ${t}\n[ ] Bertanya di luar jam pelajaran\n[ ] Menerapkan konsep dalam tugas lain\n\nC. WAWANCARA\n1. Ceritakan kapan kamu menggunakan konsep ${t}.\n2. Bagian mana yang masih membingungkan?\n3. Bagaimana kamu menjelaskan materi kepada teman?`,rubric:`INTERPRETASI:\nSkor tinggi: Mandiri dan siap pengayaan.\nSkor sedang: Berkembang dan perlu penguatan.\nSkor rendah: Perlu pendampingan pada tujuan pembelajaran.`});
+ }
+ return out
+}
+function generate(){const f=data();if(!f.topik){toast('Silakan isi Topik/Materi terlebih dahulu.');return}generated=makeItems(selected,f);renderOutput();saveHistory(f)}
+function renderOutput(){document.getElementById('toolbar').style.display='flex';document.getElementById('output').innerHTML=generated.map((g,i)=>`<div class="result"><div class="result-head"><div><small>${g.type}</small><h4>${g.title}</h4></div><button class="copy" onclick="copyOne(${i})">Salin</button></div><div class="content">${esc(g.content)}</div>${g.rubric?`<div class="box"><b>RUBRIK / PANDUAN</b>\n${esc(g.rubric)}</div>`:''}${g.key?`<div class="box key"><b>KUNCI & PEMBAHASAN</b>\n${esc(g.key)}</div>`:''}</div>`).join('')}
+function esc(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])).replace(/\n/g,'<br>')}
+function allText(){return generated.map(g=>`${g.title}\n${g.type}\n\n${g.content}${g.rubric?'\n\n'+g.rubric:''}${g.key?'\n\n'+g.key:''}\n\n---`).join('\n')}
+function copy(t,msg='Berhasil disalin!'){navigator.clipboard?.writeText(t).then(()=>toast(msg)).catch(()=>{const x=document.createElement('textarea');x.value=t;document.body.appendChild(x);x.select();document.execCommand('copy');x.remove();toast(msg)})}
+function copyOne(i){const g=generated[i];copy(`${g.title}\n\n${g.content}\n\n${g.rubric||''}\n\n${g.key||''}`,`Soal #${i+1} disalin!`)}
+function copyAll(){copy(allText(),'Semua soal berhasil disalin!')}
+function copyPrompt(){const f=data(),p=`Buatkan ${f.jumlah} soal ${TYPES[selected].label} (${TYPES[selected].items.join(', ')}) untuk:\nMata Pelajaran: ${f.mapel}\nJenjang: ${f.jenjang}\nTopik: ${f.topik}\nTujuan Pembelajaran: ${f.tujuan}\nKesulitan: ${f.kesulitan}\nInstruksi: Hasilkan soal yang sesuai level, lengkap dengan rubrik atau kunci jawaban, menggunakan bahasa Indonesia yang jelas dan rapi.`;copy(p,'Prompt AI berhasil disalin!')}
+function downloadTXT(){const f=data(),blob=new Blob([`Generator Asesmen Pintar\nMapel: ${f.mapel} | ${f.jenjang} | ${f.kesulitan}\nTopik: ${f.topik}\nTujuan: ${f.tujuan}\n\n${allText()}`],{type:'text/plain'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`asesmen-${selected}-${f.mapel.toLowerCase().replace(/\s+/g,'-')}.txt`;a.click();URL.revokeObjectURL(url)}
+function toast(m){const e=document.getElementById('toast');e.textContent=m;e.style.display='block';setTimeout(()=>e.style.display='none',1800)}
+function saveHistory(f){const h=JSON.parse(localStorage.getItem('asesmenHistory')||'[]');h.push({type:selected,form:f,count:generated.length,created:new Date().toLocaleString('id-ID')});localStorage.setItem('asesmenHistory',JSON.stringify(h.slice(-100)));updateHistory()}
+function updateHistory(){const h=JSON.parse(localStorage.getItem('asesmenHistory')||'[]');document.getElementById('historyCount').textContent=h.length;document.getElementById('historyList').innerHTML=h.length?[...h].reverse().map(x=>`<div class="history-item"><b>${TYPES[x.type]?.label||x.type} • ${x.form.jenjang} • ${x.form.kesulitan}</b><br><span>${x.form.mapel} • ${x.form.topik}</span><br><small>${x.created}</small></div>`).join(''):'<p style="color:#64748b;font-size:13px">Belum ada riwayat.</p>'}
+function toggleHistory(){document.getElementById('drawer').classList.toggle('show');updateHistory()}
+init();
+</script>
+</body></html>
